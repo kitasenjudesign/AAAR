@@ -9,7 +9,7 @@ public class FlyerPlay : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		
-		_panfus.Init(600,0f,0.7f);
+		_panfus.Init(300,-0.1f,0.7f,true);
 
 
 	}

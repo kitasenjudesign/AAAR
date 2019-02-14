@@ -32,8 +32,10 @@ public class PanfuData {
         enable = true;
         parentMatrix = t.localToWorldMatrix;
         _rad = startRad;
-        _limitY     = 1.5f + Random.value;
-        _targetAmp  = radiusRatio * ( 0.1f + 0.7f * Random.value );
+        _limitY     = 1f + Random.value;
+        _targetAmp  = radiusRatio * ( 0.15f + 0.65f * Random.value );
+        pos = Vector3.zero;
+        _amp=0;
     }
 
 
@@ -42,12 +44,13 @@ public class PanfuData {
         if( enable ){
             
             if(ratio>0){
-                _rad += 1f * Time.deltaTime;
+                _rad += 1.5f * Time.deltaTime;
             }else{
-                _rad += 1f * (1f + ratio)* Time.deltaTime;
+                //_rad += 1f * (1f + ratio)* Time.deltaTime;
             }
 
-            pos.y += 0.3f * Time.deltaTime;
+            //pos.y += 0.3f * Time.deltaTime;
+            pos.y += 0.2f * Time.deltaTime;
             ratio += 0.5f * Time.deltaTime;
 
 
@@ -68,7 +71,7 @@ public class PanfuData {
             }
 
             if(ratio>0){
-                _amp += 0.2f * Time.deltaTime;//ratio * _targetAmp;
+                _amp += 0.1f * Time.deltaTime;//ratio * _targetAmp;
             }
 
             if(_amp > _targetAmp){

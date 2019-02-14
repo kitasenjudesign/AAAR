@@ -15,9 +15,13 @@ public class Panfus : DrawMeshInstancedBase {
     private float _startRatio;
     private float _radiusRatio;
 
-    public void Init(int num, float startRatio, float radiusRatio){
+    private bool _isPlayMode;
+
+    public void Init(int num, float startRatio, float radiusRatio, bool isPlayMode){
 
         Debug.Log("init");
+
+        _isPlayMode = isPlayMode;
 
         _count = num;
         _startRatio = startRatio;
@@ -30,7 +34,9 @@ public class Panfus : DrawMeshInstancedBase {
         _rand = new Vector4[MAX];
         _ratios= new float[MAX];
 
-        for(int i=0;i<_count;i++){
+        int cnt = _isPlayMode ? 1 : 0;
+
+        for(int i=0;i<_count + cnt;i++){
                 _matrices[i] = Matrix4x4.identity;
                 _data[i] = new PanfuData();
                 _data[i].startRad = _startRotY * Mathf.Deg2Rad;
@@ -65,12 +71,15 @@ public class Panfus : DrawMeshInstancedBase {
 
     void _loop(){
 
-        //Debug.Log("_loop");
-        int index = _index % _data.Length;
-        _data[index].Reset(transform,_startRatio,_radiusRatio);
+       
+        int index = _index % _count;
+        //Debug.Log(index);
+        _data[index].Reset(
+            transform,_startRatio,_radiusRatio
+        );
         
         _index++;
-        Invoke("_loop",0.2f);
+        Invoke("_loop",0.3f);
     }
     
     void OnDestroy()
@@ -99,16 +108,35 @@ public class Panfus : DrawMeshInstancedBase {
 
         }
 
+        //
+        if(_isPlayMode){
+            
+            _data[_count].scale.Set(1f,1f,1f);
+            _data[_count].rot = Quaternion.Euler(0,-90f,0);
+
+            _matrices[_count].SetTRS( 
+                _data[_count].pos,
+                _data[_count].rot,
+                _data[_count].scale
+            );
+            _matrices[_count] = transform.localToWorldMatrix * _matrices[_count];
+            _ratios[_count] = 0;
+
+        }
+
+
         _propertyBlock.SetVectorArray("_Color", _colors);
         _propertyBlock.SetVectorArray("_Rand", _rand);
         _propertyBlock.SetFloatArray("_Ratio", _ratios);
+
+        int cnt = _isPlayMode ? 1 : 0;
 
         Graphics.DrawMeshInstanced(
                 _mesh, 
                 0, 
                 _mat, 
                 _matrices, 
-                _count, 
+                _count + cnt,
                 _propertyBlock, 
                 ShadowCastingMode.On, 
                 false, 

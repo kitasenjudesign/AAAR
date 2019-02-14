@@ -2,6 +2,11 @@
 
 Shader "Custom/MobileARShadow"
 {
+    Properties
+    {
+        _MainTex ("_MainTex", 2D) = "white" {}
+    }
+
     SubShader {
         Pass {
          
@@ -28,11 +33,13 @@ Shader "Custom/MobileARShadow"
             // 3.) Reference the Unity library that includes all the lighting shadow macros
             #include "AutoLight.cginc"
  
+            sampler2D _MainTex;
  
             struct v2f
             {
                 float4 pos : SV_POSITION;
-                 
+                float2 uv : TEXCOORD0;
+
                 // 4.) The LIGHTING_COORDS macro (defined in AutoLight.cginc) defines the parameters needed to sample 
                 // the shadow map. The (0,1) specifies which unused TEXCOORD semantics to hold the sampled values - 
                 // As I'm not using any texcoords in this shader, I can use TEXCOORD0 and TEXCOORD1 for the shadow 
@@ -45,7 +52,7 @@ Shader "Custom/MobileARShadow"
             v2f vert(appdata_base v) {
                 v2f o;
                 o.pos = UnityObjectToClipPos (v.vertex);
-                 
+                o.uv = v.texcoord;
                 // 5.) The TRANSFER_VERTEX_TO_FRAGMENT macro populates the chosen LIGHTING_COORDS in the v2f structure
                 // with appropriate values to sample from the shadow/lighting map
                 TRANSFER_VERTEX_TO_FRAGMENT(o);
@@ -57,7 +64,14 @@ Shader "Custom/MobileARShadow"
              
                 // 6.) The LIGHT_ATTENUATION samples the shadowmap (using the coordinates calculated by TRANSFER_VERTEX_TO_FRAGMENT
                 // and stored in the structure defined by LIGHTING_COORDS), and returns the value as a float.
-                float attenuation = LIGHT_ATTENUATION(i);
+
+                fixed4 tex = tex2D(_MainTex,i.uv);
+                float r = 1 - tex.r;
+
+                //1だと透明
+                float attenuation = max( LIGHT_ATTENUATION(i), r );
+
+
                 return fixed4(1.0,1.0,1.0,1.0) * attenuation;
             }
  

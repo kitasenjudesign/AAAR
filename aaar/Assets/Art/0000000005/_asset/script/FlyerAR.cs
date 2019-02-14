@@ -9,7 +9,7 @@ public class FlyerAR : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		
-		_panfus.Init(800,-0.5f,0.8f);
+		_panfus.Init(250,-0.1f,0.5f,false);
 
 	}
 	
