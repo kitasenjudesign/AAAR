@@ -25,7 +25,7 @@ namespace kitasenju{
 
 		void AddImageAnchor(ARImageAnchor arImageAnchor)
 		{
-			if(imageAnchorGO)return;
+			if(imageAnchorGO!=null)return;
 
 			Debug.Log ("image anchor added");
 			if (arImageAnchor.referenceImageName == referenceImage.imageName) {
@@ -33,6 +33,7 @@ namespace kitasenju{
 				Quaternion rotation = UnityARMatrixOps.GetRotation (arImageAnchor.transform);
 
 				imageAnchorGO = Instantiate<GameObject> (prefabToGenerate, position, rotation);
+				imageAnchorGO.gameObject.SetActive(true);
 			}
 		}
 

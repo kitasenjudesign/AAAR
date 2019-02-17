@@ -5,7 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Art/0000000005/_test/arTest.unity
     guid: 32fb437384f6e45adaedc558d9bd8db4
+  - enabled: 0
+    path: Assets/Art/0000000002/01_solitaire/_test/arTestSolitaire.unity
+    guid: 90abfbab2977a4321aa43b92b591e731
+  - enabled: 1
+    path: Assets/Art/0000000000/scene/moneyAR.unity
+    guid: 2b14051293be346039221652f17b195e
   m_configObjects: {}

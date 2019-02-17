@@ -38,7 +38,7 @@ Shader "Custom/Solitaire3" {
 
             c.rgb = fixed4(1.0,0,0,0);
             
-			c.rgb = s.Albedo * _LightColor0.rgb * ( d * _Offset + (1.0 - _Offset) );
+			c.rgb = s.Albedo;// * _LightColor0.rgb * ( d * _Offset + (1.0 - _Offset) );
             c.a = 0;
 
             return c;
